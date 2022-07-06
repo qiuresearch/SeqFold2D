@@ -96,7 +96,7 @@ def seq2quant(seq, dbn=None, use_nn=0, use_dbn=False, length=None):
     # convert to capital letters and replace X by N, T by U
     seq = seq.upper().replace('X', 'N').replace('T', 'U')
 
-    # deal with nearest eighbor inclusions
+    # deal with nearest neighbor inclusions
     seq = ('-' * use_nn) + seq + ('-' * use_nn)
     if use_dbn and dbn is not None:
         dbn = ('-' * use_nn) + dbn + ('-' * use_nn)
@@ -119,17 +119,17 @@ def seq2quant(seq, dbn=None, use_nn=0, use_dbn=False, length=None):
             res_emb.extend([dbn2num_dict.get(dbn[i + _i], 0) for _i in nn_indices])
 
         # if use_attr: (not necessary for using attributes)
-            # res_embeded.append(res2onehot_attr_dict[seq[i]])
+            # res_embedded.append(res2onehot_attr_dict[seq[i]])
         seq_emb.append(np.array(res_emb, dtype=np.int32))
 
     seq_emb = np.stack(seq_emb, axis=0)
     dim_sizes = np.array(dim_sizes, dtype=np.int32)
-    # the mutiplier for each dim, 1 for the last dim
-    dim_multplier = np.concatenate((np.flip(np.cumprod(np.flip(dim_sizes[1:]))),
+    # the multiplier for each dim, 1 for the last dim
+    dim_multiplier = np.concatenate((np.flip(np.cumprod(np.flip(dim_sizes[1:]))),
                                       np.ones((1), dtype=np.int32)), axis=0)
 
     # quantize the vector for each residue
-    seq_emb = np.matmul(seq_emb, dim_multplier)
+    seq_emb = np.matmul(seq_emb, dim_multiplier)
 
     if len(seq_emb) < length:
         seq_emb = np.concatenate((seq_emb, np.zeros((length - len(seq_emb),), dtype=np.int32)))
@@ -268,28 +268,28 @@ def seq2onehot(seq, dbn=None, bpp=None, length=None,
     seq_emb = np.stack(seq_emb, axis=0)
 
     # if use_attr and use_dbn and dbn is not None:
-    #     seq_embeded = [np.concatenate((
+    #     seq_embedded = [np.concatenate((
     #         res2onehot_dict[_s],
     #         res2onehot_attr_dict[_s],
     #         dbn2onehot_dict[dbn[_i]],
     #     )) for _i, _s in enumerate(seq)]
     # elif use_attr and not use_dbn:
-    #     seq_embeded = [np.concatenate((
+    #     seq_embedded = [np.concatenate((
     #         res2onehot_dict[_s],
     #         res2onehot_attr_dict[_s],
     #     )) for _s in seq]
     # elif use_dbn and dbn is not None:
-    #     seq_embeded = [np.concatenate((
+    #     seq_embedded = [np.concatenate((
     #         res2onehot_dict[_s],
     #         dbn2onehot_dict[dbn[_i]],
     #     )) for _i, _s in enumerate(seq)]
     # else:
-    #     seq_embeded = [res2onehot_dict[_s] for _s in seq]
+    #     seq_embedded = [res2onehot_dict[_s] for _s in seq]
 
     # if use_dbn and dbn is not None:
     #     for _i, _s in enumerate(dbn):
-    #         seq_embeded[_i].extend(dbn2onehot_dict[_s])
-    # rna_embeded = [np.concatenate((
+    #         seq_embedded[_i].extend(dbn2onehot_dict[_s])
+    # rna_embedded = [np.concatenate((
     #                     res2onehot_dict[_s],
     #                     res2onehot_attr_dict[_s] if use_attr else [],
     #                     dbn2onehot_dict[dbn[_i]] if use_dbn else [],
@@ -586,7 +586,7 @@ def mutate_residues(seq_npa, rate=0.2, replace=True,
         alphabet=np.array(list('AUGC'), dtype='U1'),
         rng=np.random.default_rng(),
         return_list=False):
-    """ np.ndarry is returned!!! """
+    """ np.ndarray is returned!!! """
     assert 0. <= rate <= 1.0, 'rate must be between 0 and 1!!!'
     seq_len = len(seq_npa)
     if type(seq_npa) is not np.ndarray:
@@ -614,7 +614,7 @@ def mutate_residues(seq_npa, rate=0.2, replace=True,
 def mutate_basepairs(seq_npa, ct, rate=0.2, replace=True,
         alphabet=np.array(['AU', 'UA', 'GC', 'CG', 'GU', 'UG'], dtype='U2'),
         rng=np.random.default_rng(), return_list=False):
-    """ np.ndarry is returned!!! """
+    """ np.ndarray is returned!!! """
     assert 0. <= rate <= 1.0, 'rate must be between 0 and 1!!!'
 
     ct_len = len(ct)
@@ -680,11 +680,11 @@ def DEBUG_encoding():
     print('\nQuant/scalar encoding with dbn')
     print(seq2quant(seq_debug, dbn_debug, use_dbn=True, length=23))
 
-    print('\nEmbending sequence only')
+    print('\nEmbedding sequence only')
     print(seq2onehot(seq_debug, use_attr=False))
-    print('\nEmbending sequence with dbn')
+    print('\nEmbedding sequence with dbn')
     print(seq2onehot(seq_debug, dbn=dbn_debug, use_dbn=True, use_attr=False))
-    print('\nEmbending sequence with dbn and trait')
+    print('\nEmbedding sequence with dbn and trait')
     print(seq2onehot(seq_debug, dbn=dbn_debug, use_dbn=True, length=23, use_attr=True))
 
 
@@ -703,7 +703,7 @@ def pair_energy(na_pair):
 
 
 def ct_clip_delta_ij(ct, min_delta_ij=3):
-    """ remove ct pairs with deta_ij < min_delta_ij, i and j are not sorted """
+    """ remove ct pairs with delta_ij < min_delta_ij, i and j are not sorted """
     if ct.ndim == 2 and ct.shape[0]:
         return np.delete(ct, np.nonzero(abs(np.diff(ct, axis=-1)) < min_delta_ij)[0], axis=0)
     else:
@@ -736,7 +736,7 @@ def bpmat_clip_stem_len(bpmat, min_stem_len=2, gap_len=0):
     """ remove stems with length < min_stem_len in the bpmat/ctmat
 
     The recipe is to first pad bpmat along -i, +i, -j, +j,
-    then count the coutinuous ones along the diagnal direction.
+    then count the continuous ones along the diagonal direction.
     Counting is done along both upper-right and lower-left directions,
     and the two counts are added
 

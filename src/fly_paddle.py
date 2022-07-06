@@ -655,7 +655,7 @@ class SeqLossFn_P2P(nn.Layer):
 
     def as_label(self, input):
         """ Convert input to the same form as label, as model outputs may need
-        to go through sigmod, softmax, etc.
+        to go through sigmoid, softmax, etc.
         """
         if not isinstance(input, mi.Tensor):
             input = mi.to_tensor(input)
@@ -2283,7 +2283,7 @@ def evaluate_in_train(model=None, miset=None, trail=misc.Struct(), **kwargs):
         eval_trail.objective_direction = 'minimize'
 
     save_chkpt = False
-    # do not do anything with the first call (usually with initializd parameters)
+    # do not do anything with the first call (usually with initialized parameters)
     if eval_trail.times_called > 1:
         if eval_trail.objective_best is None:
             eval_trail.objective_best = mean_ds[eval_trail.objective]
@@ -2408,7 +2408,7 @@ def scan_data_args(args, miset, data_sizes=None, batch_sizes=None, **kwargs):
     data_indices = np.linspace(0, num_data-1, num=num_data, dtype=int)
     for i, (data_size, batch_size) in enumerate(itertools.product(data_sizes, batch_sizes)):
         logger.info(f'scan #{i}, data_size: {data_size}, batch_size: {batch_size}')
-        batch_size = int(batch_size) # somehow neede for paddle
+        batch_size = int(batch_size) # somehow needed for paddle
 
         # get train data
         if 0 < data_size < num_data:
@@ -2426,7 +2426,7 @@ def scan_data_args(args, miset, data_sizes=None, batch_sizes=None, **kwargs):
         objective = train(model, train_data, batch_size=batch_size, save_dir=None)
         args.save_dir = save_dir
 
-        # should consier to reduce the level to batch, at least
+        # should consider to reduce the level to batch, at least
         scan_train_loss.append(model.train_loss.assign(data_size=data_size, batch_size=batch_size))
         scan_valid_loss.append(model.valid_loss.assign(data_size=data_size, batch_size=batch_size))
 
@@ -2472,7 +2472,7 @@ def scan_data_args(args, miset, data_sizes=None, batch_sizes=None, **kwargs):
 
 def scout_args(args, train_set, valid_set=None, arg_names=None, arg_values=None,
             grid_search=False, **kwargs):
-    """ Both arg_names and argvalues are lists of MATCHING names/values """
+    """ Both arg_names and arg_values are lists of MATCHING names/values """
     # take care of args
     args.update(kwargs)
 
@@ -2735,7 +2735,7 @@ def launch_evaluate(args):
                 loss_df_finetuned.to_csv(eval_save_path / 'valid_loss_finetuned.csv', index=False)
 
                 # get loss_df_final
-                if args.output_threshold is None: # the same finetuned and final csvs
+                if args.output_threshold is None: # the same finetuned and final csv
                     args.output_threshold = threshold_by_grid_search
                     loss_df_final = loss_df_finetuned
                 else:
@@ -2855,7 +2855,7 @@ def launch_cross_validate(args):
 
 
 def launch_scan_data(args):
-    # a new model is created everytime
+    # a new model is created every time
     # model = get_model(args)
     # if args.resume and args.load_dir:
     #     state_dict_load(model, fdir=args.load_dir)
@@ -3058,7 +3058,7 @@ def launch_scout_args(args):
 
 def launch_average_model(args):
     """ call evaluate() """
-    # first get the load_dirs and parse valid_loss from dir. name if possbile
+    # first get the load_dirs and parse valid_loss from dir. name if possible
     load_dirs = []
     valid_loss_models = [] # np.ones((num_models,), dtype=np.float32)
     for imodel, load_dir in enumerate(args.model_dirs):
@@ -3103,7 +3103,7 @@ def launch_average_model(args):
 
     valid_loss_models = np.array(valid_loss_models, dtype=np.float32)
 
-    # load data using the current commandline args
+    # load data using the current command line args
     midat = mitas_utils.load_chop_midat(args, data_name=args.data_files,
             data_dir=args.data_dir if "data_dir" in args.kwargs else None)
     miset = get_dataset(midat, args)
@@ -3173,7 +3173,7 @@ def launch_average_model(args):
 
     logger.info(f'Averaging models with weights: {model_weights}...')
 
-    # zip to get each item to be a list of model predictions for one seqence
+    # zip to get each item to be a list of model predictions for one sequence
     y_guess_models = zip(*y_guess_models)
     # y_output_models = zip(*as_label_models)
     # stack to get one numpy array for each seq, then get the averaged model predictions!

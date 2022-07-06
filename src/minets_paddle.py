@@ -177,7 +177,7 @@ def stack_lstm_block(channel_sizes, data_fmt=None, direction=None,
 
     # ======= Parameters
     assert len(channel_sizes) > 1, 'require at least two channel sizes!!!'
-    assert isinstance(direction, str), 'direction is a requred argument'
+    assert isinstance(direction, str), 'direction is a required argument'
 
     direction = direction.lower()
     if direction == 'forward':
@@ -207,7 +207,7 @@ def stack_lstm_block(channel_sizes, data_fmt=None, direction=None,
                             hidden_size = channel_sizes[i],
                             num_layers = 1,   # always one layer in one block, multiple layers are done in Tower
                             direction = direction,
-                            dropout = 0.0, # this is inbetwen layers, not needed as num_layers = 1
+                            dropout = 0.0, # this is inbetween layers, not needed as num_layers = 1
                             ))
                 in_channels = channel_sizes[i] * num_directions
 
@@ -242,9 +242,9 @@ def stack_conv1d_block(channel_sizes, data_fmt=None, kernel_size=None, stride=No
     """ return a list of conv1d layers from nchannels[0] to nchannels[-1] """
 
     # ======= Parameters
-    assert isinstance(data_fmt, str), 'data_fmt is a requred argument!'
+    assert isinstance(data_fmt, str), 'data_fmt is a required argument!'
     assert (len(channel_sizes) - 1) == len(kernel_size) == len(stride) == len(dilation) == len(padding), \
-        'channel_sizes-1, kernel_size, strid, dilation, and padding must have the same length!!!'
+        'channel_sizes-1, kernel_size, stride, dilation, and padding must have the same length!!!'
 
     data_fmt = data_fmt.upper()
     if max(padding) > 0 and padding_mode is None:
@@ -323,9 +323,9 @@ def stack_conv2d_block(channel_sizes, data_fmt=None, kernel_size=None, stride=No
     """ return a list of conv2d layers from nchannels[0] to nchannels[-1] """
 
     # ======= Parameters
-    assert isinstance(data_fmt, str), 'data_fmt is a requred argument!'
+    assert isinstance(data_fmt, str), 'data_fmt is a required argument!'
     assert (len(channel_sizes) - 1) == len(kernel_size) == len(stride) == len(dilation) == len(padding), \
-        'channel_sizes-1, kernel_size, strid, dilation, and padding must have the same length!!!'
+        'channel_sizes-1, kernel_size, stride, dilation, and padding must have the same length!!!'
 
     data_fmt = data_fmt.upper()
     if max(padding) > 0 and padding_mode is None:
@@ -664,7 +664,7 @@ class MatPaddingMaskOut(nn.Layer):
 class MatDiagonalMaskOut(nn.Layer):
     """  """
     def __init__(self, data_fmt='LL', dtype='float32', offset=0, reverse=False):
-        """ the default is to mask out (0.) diagnoal elements, unless reverse=True
+        """ the default is to mask out (0.) diagonal elements, unless reverse=True
             data_fmt: NLLC. Only used to unsqueeze the mask if needed
             diagonal: None or False -> No mask
                       an integer n -> the diagonal and n lower and upper neighbors
@@ -696,7 +696,7 @@ class MatDiagonalMaskOut(nn.Layer):
         """ data_len [H, W] for NHWC """
         if self.offset is None: return self.mask_nil
         if not hasattr(data_shape, '__len__'): data_shape = [data_shape, data_shape]
-        assert len(data_shape) == 2, f'data_shape: {data_shape} must have two elments!'
+        assert len(data_shape) == 2, f'data_shape: {data_shape} must have two elements!'
 
         if data_shape[0] > self.mask_mat.shape[0] or data_shape[1] > self.mask_mat.shape[1]:
             logger.info(f'Generating new mask_mat with shape: {data_shape} ...')
@@ -751,8 +751,8 @@ class Seq2MatCastxD(nn.Layer):
         self.out_fmt = out_fmt.upper()
 
         assert self.method in ['CONCAT', 'ADD', 'MULTIPLY'], f"Unknown method: {self.method}"
-        assert self.in_fmt in ['NLC', 'NCL'], f"Uknown in_fmt: {self.in_fmt}!"
-        assert self.out_fmt in ['NCHW', 'NHWC'], f"Uknown out_fmt: {self.out_fmt}!"
+        assert self.in_fmt in ['NLC', 'NCL'], f"Unknown in_fmt: {self.in_fmt}!"
+        assert self.out_fmt in ['NCHW', 'NHWC'], f"Unknown out_fmt: {self.out_fmt}!"
 
         dim_map = dict(CONCAT=2, ADD=1, MULTIPLY=1)
         self.mul_channels = dim_map.get(self.method, 1)
@@ -826,7 +826,7 @@ class MyNormLayer(nn.Layer):
         self.fn = fn.lower()
         self.mask = mask
         # ======= Parameters
-        assert isinstance(data_fmt, str), 'data_fmt is a requred argument'
+        assert isinstance(data_fmt, str), 'data_fmt is a required argument'
         self.in_channels = in_channels
         self.data_fmt = data_fmt.upper()
         self.data_ndim = len(self.data_fmt)
@@ -1246,7 +1246,7 @@ class ScaledEfficientAttention(nn.Layer):
 
         if mask is not None and len(mask):
             # we can leave q alone as softmax is over the channel dim
-            # also leave v alone as it is multplied by softmax(k)
+            # also leave v alone as it is multiplied by softmax(k)
             k += mask
 
         # [N, nhead, len_k, dim_k] x [N, nhead, len_v, dim_v] ->  [N, nhead, dim_k, len_k]
@@ -1329,7 +1329,7 @@ class MyMultiHeadAttention(nn.Layer):
             self.Attend = ScaledEfficientAttention(scale=self.scale,
                         act_fn=self.act_fn, dropout=self.dropout, posenc=posenc)
         else:
-            logger.critical(f'Uknown attn_method: {self.method}')
+            logger.critical(f'Unknown attn_method: {self.method}')
 
         self.LinearZ = nn.Linear(v_dim[-1], q_dim[-1], bias_attr=None, # False,
                     weight_attr=mi.ParamAttr(initializer=nn.initializer.XavierNormal()))
@@ -1353,7 +1353,7 @@ class MyMultiHeadAttention(nn.Layer):
         k = self.Linear2K(k).reshape([batch_size, k_len, nhead, -1])
         v = self.Linear2V(v).reshape([batch_size, v_len, nhead, -1])
 
-        # Tranpose to [N, nhead, len, dim]
+        # Transpose to [N, nhead, len, dim]
         q = q.transpose([0, 2, 1, 3])
         k = k.transpose([0, 2, 1, 3])
         v = v.transpose([0, 2, 1, 3])
@@ -2132,7 +2132,7 @@ class MyConv1DTower(nn.Layer):
         self.stride = fn_par2npa(args.conv1d_stride)
         self.dilation = fn_par2npa(args.conv1d_dilation)
 
-        # dim, stride, dilation, kernal_size should have the same length
+        # dim, stride, dilation, kernel_size should have the same length
         fn_fix_length = lambda x: mitas_utils.fix_length1d(x, len(self.channel_sizes), constant_values=x[-1])
         self.stride = fn_fix_length(self.stride)
         self.dilation = fn_fix_length(self.dilation)
@@ -2265,7 +2265,7 @@ class MyConv2DTower(nn.Layer):
         self.stride = fn_par2npa(args.conv2d_stride)
         self.dilation = fn_par2npa(args.conv2d_dilation)
 
-        # dim, stride, dilation, kernal_size should have the same length
+        # dim, stride, dilation, kernel_size should have the same length
         fn_fix_length = lambda x: mitas_utils.fix_length1d(x, len(self.channel_sizes), constant_values=x[-1])
         self.stride = fn_fix_length(self.stride)
         self.dilation = fn_fix_length(self.dilation)
