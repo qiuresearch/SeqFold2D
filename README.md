@@ -27,6 +27,9 @@ A minimal two-module deep learning model for de novo prediction of RNA secondary
 The simplest way is to create a new anaconda environment using the requirements_[cpu|gpu].txt or environment_[cpu|gpu].txt file by running:
 
 `conda create -n [env-name] --file requirements_[cpu|gpu].txt`
+
+or 
+
 `conda env create -f environment_[cpu|gpu].yml`
 
 Warning: this will install a number of additional packages not directly used by SeqFold2D
