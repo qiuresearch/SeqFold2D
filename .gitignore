@@ -4,6 +4,7 @@
 *.pdf
 *.pkl
 *.csv
+*.log
 .bash_history
 
 # Byte-compiled / optimized / DLL files
