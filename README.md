@@ -1,30 +1,34 @@
 # SeqFold2D
-A minimal two-module deep learning model for de novo prediction of RNA secondary structures
-<img src="seqfold2d.png" width=200/>
+
+<img src="seqfold2d.png" width=300 align="right"/>
+
+A minimal two-module deep learning model for de novo prediction of RNA secondary structures. Please refer to *Decisive Roles of Sequence Distributions in the Generalizability of de novo Deep Learning Models for RNA Secondary Structure Prediction*, bioRxiv 2022.06.29.498185; [doi: https://doi.org/10.1101/2022.06.29.498185](https://www.biorxiv.org/content/10.1101/2022.06.29.498185v2) for details. 
 
 ## Contents
+---
 1. src folder
-   contains all python codes for training, evaluation, and prediction
+   : contains all python codes for training, evaluation, and prediction
 2. models folder
-   contains nine saved SeqFold2D models. Each model is named as {dataset}.{devset}.{nparams}. For each model, you can find 
-    a) args.json, the configuration file
-    b) minets_paddle.py, the source code at the time of model creation
-    c) net.state, the model state dictionary
-    d) opt.state, the optimizer state dictionary
+   : contains nine saved SeqFold2D models. Each model is named as {dataset}.{devset}.{nparams}. For each model, you can find 
+    - args.json, the configuration file
+    - minets_paddle.py, the source code at the time of model creation
+    - net.state, the model state dictionary
+    - opt.state, the optimizer state dictionary
 3. figures folder
-   contains various plots, though most are unannotated.
+   : contains various plots, though most are unannotated
 4. examples folder
-   contains example fasta input files
+   : contains example fasta input files
 5. seqfold2d.sh
-   the main script. Run it with no argument to get help.
+   : the main script
 
    
 ## Install
+---
 
 #### All in One
-1. The simplest way is to create a new anaconda environment using the requirements_[cpu|gpu].txt or environment_[cpu|gpu].txt file by running:
-> conda create -n [env-name] --file requirements_[cpu|gpu].txt
-> conda env create -f environment_[cpu|gpu].yml
+The simplest way is to create a new anaconda environment using the requirements_[cpu|gpu].txt or environment_[cpu|gpu].txt file by running:
+`conda create -n [env-name] --file requirements_[cpu|gpu].txt`
+`conda env create -f environment_[cpu|gpu].yml`
 Warning: this will install a number of additional packages not directly used by SeqFold2D
 
 #### One by One
@@ -40,6 +44,7 @@ Warning: this will install a number of additional packages not directly used by 
 
 
 ## Usage
+---
 seqfold2d.sh should be the only script needed to run the code. It can be run without argument to get the following help:
 ```
 
