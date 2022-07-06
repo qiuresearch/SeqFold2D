@@ -1,5 +1,6 @@
 # SeqFold2D
 A minimal two-module deep learning model for de novo prediction of RNA secondary structures
+<img src="seqfold2d.png" width=200/>
 
 ## Contents
 1. src folder
@@ -15,21 +16,28 @@ A minimal two-module deep learning model for de novo prediction of RNA secondary
 4. examples folder
    contains example fasta input files
 5. seqfold2d.sh
-   the main script. Run it with no argument for help.
+   the main script. Run it with no argument to get help.
 
    
 ## Install
 
 #### All in One
-1. The best way is to create a new anaconda environment using the requirements_cpu.txt or requirements_gpu.txt file by running:
+1. The simplest way is to create a new anaconda environment using the requirements_[cpu|gpu].txt or environment_[cpu|gpu].txt file by running:
 > conda create -n [env-name] --file requirements_[cpu|gpu].txt
+> conda env create -f environment_[cpu|gpu].yml
 Warning: this will install a number of additional packages not directly used by SeqFold2D
 
 #### One by One
-1. PaddlePaddle
-   Please follow [the official installation instruction here.](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html)
-3. Pandas, colorlog, plotly, colorlog, plotly
-   We are working on a better way for doing individiual installations...
+1. python>=3.8
+2. PaddlePaddle>=2.2.2 (Please follow [the official installation instruction here.](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html))
+3. numpy>=1.21
+4. pandas>=1.41
+5. colorlog>=5.0.1
+6. tqdm>=4.63
+7. matplotlib>=3.5.1
+8. scipy>=1.7.3
+9. scikit-learn>=1.02
+
 
 ## Usage
 seqfold2d.sh should be the only script needed to run the code. It can be run without argument to get the following help:
@@ -61,6 +69,4 @@ For example, to predict the secondary structures of the 100 sequences in the exa
 ```
 seqfold2d.sh predict examples/stralign_nr80_100Seqs.fasta -model stralign.NR80.1p4M
 ```
-You will see a lot of outputs as the code runs. You can turn them off by passing "-verbose 0" to seqfold2d.sh. 
-
-Even with "-verbose 0", you may still see lot of warnings and error message. Just ignore them.
+A folder will be created under current directory and a bpseq file and pairing probability matrix will be saved for each sequence.
