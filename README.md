@@ -5,7 +5,6 @@
 A minimal two-module deep learning model for de novo prediction of RNA secondary structures. Please refer to *Decisive Roles of Sequence Distributions in the Generalizability of de novo Deep Learning Models for RNA Secondary Structure Prediction*, bioRxiv 2022.06.29.498185; [doi: https://doi.org/10.1101/2022.06.29.498185](https://www.biorxiv.org/content/10.1101/2022.06.29.498185v2) for details. 
 
 ## Contents
----
 1. src folder
    : contains all python codes for training, evaluation, and prediction
 2. models folder
@@ -23,12 +22,13 @@ A minimal two-module deep learning model for de novo prediction of RNA secondary
 
    
 ## Install
----
 
 #### All in One
 The simplest way is to create a new anaconda environment using the requirements_[cpu|gpu].txt or environment_[cpu|gpu].txt file by running:
+
 `conda create -n [env-name] --file requirements_[cpu|gpu].txt`
 `conda env create -f environment_[cpu|gpu].yml`
+
 Warning: this will install a number of additional packages not directly used by SeqFold2D
 
 #### One by One
@@ -44,11 +44,10 @@ Warning: this will install a number of additional packages not directly used by 
 
 
 ## Usage
----
 seqfold2d.sh should be the only script needed to run the code. It can be run without argument to get the following help:
-```
 
-Usage: seqfold2d.sh action data_files [cmOptions]
+```
+Usage: seqfold2d.sh action data_files [cmdArgs]
 
 Arguments:
     action          : one of train, evaluate/eval, predict
