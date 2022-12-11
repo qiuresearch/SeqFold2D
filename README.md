@@ -2,7 +2,7 @@
 
 <img src="seqfold2d.png" width=300 align="right"/>
 
-A minimal two-module deep learning model for de novo prediction of RNA secondary structures. Please refer to *Decisive Roles of Sequence Distributions in the Generalizability of de novo Deep Learning Models for RNA Secondary Structure Prediction*, bioRxiv 2022.06.29.498185; [doi: https://doi.org/10.1101/2022.06.29.498185](https://www.biorxiv.org/content/10.1101/2022.06.29.498185v2) for details. 
+A minimal two-module deep learning model for de novo prediction of RNA secondary structures.
 
 ## Contents
 1. src folder
