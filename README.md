@@ -5,7 +5,6 @@
 A minimal two-module deep learning model for de novo prediction of RNA secondary structures.
 
 ## Main contents
----
 1. src folder
    - contains all python codes for training, evaluation, and prediction
 2. models folder
@@ -20,7 +19,6 @@ A minimal two-module deep learning model for de novo prediction of RNA secondary
 
    
 ## Install
----
 #### All in One
 The simplest way is to create a new anaconda environment using the environment_[cpu|gpu].yml file by running:
 
@@ -60,7 +58,6 @@ conda install colorlog optuna -c conda-forge -y
 
 
 ## Usage
----
 seqfold2d.sh should be the only script needed to run the code. It can be run without argument to get the following help:
 
 ```
@@ -90,10 +87,8 @@ Arguments:
 Multiprocess PaddlePaddle appears to throw many error messages during the run, which is an open issue on github (https://github.com/PaddlePaddle/Paddle/issues/46870). It does NOT appear to affect the running of the program. -->
 
 ## Examples
----
 
 ### Brew data for training
----
 You only need to pre-process data if you are going to train a SeqFold2D model with your own data. The best starting place is a folder of bpseq, ct, or dbn files. Run the following command to generate a pkl file (saved from a pd.DataFrame) for training.
 
 `seqfold2d.sh brew_dbn [folder-name]`
@@ -108,7 +103,6 @@ Three files will be saved:
 - folder-name.json for some statistics of the dataset
 
 ### Train
----
 There are three main ways. 
 1. Fine-tune or retrain from scratch one of the saved models
 
@@ -151,7 +145,6 @@ One major barrier is that most parameters in args.json are unused/obsolete. You 
 ```
 
 ### Predict
----
 1. Predict secondary structures from fasta file(s)
 : We will use the 100 sequences in the examples/stralign_nr80_100Seqs.fasta file with model stralign.NR80.1p4M, run
 
