@@ -47,6 +47,7 @@
     "input_fmt": "NLC",
     "input_dim": 12,
     "input_nn": 1,
+    "feats_nn": 1,
     "input_dbn": false,
     "input_attr": false,
     "input_extra": false,
