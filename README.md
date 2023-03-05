@@ -101,13 +101,14 @@ Three files will be saved:
 - folder-name.json for some statistics of the dataset
 
 ### Train
-You can test whether training can proceed with the provided Stralign NR80 dataset before trying one of the three ways below.
+You can first test your installation with the provided Stralign NR80 dataset before trying one of the three ways below.
 
    `seqfold2d.sh train -model bprna.TR0VL0.960K examples/stralign_nr80.pkl -resume true`
 
 1. Fine-tune or retrain from scratch one of the saved models
 
    `seqfold2d.sh train -model bprna.TR0VL0.960K train_data_file -resume true`
+
 This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 datasets. Remove "-resume true" for training from scratch. 
 
 2. Train a new model modified from one of the saved models
@@ -117,11 +118,13 @@ This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 
 The example above will start from the SeqFold2D-960K model and change the number of LSTM blocks from 2 to 3 and the channel size from 64 to 128.
 
 
-3. Train a completely customized model. This is a bit tricky as there are a number of parameters defining the architecture and training recipe. One way is to start from the models/bprna.TR0VL0.960K/args.json file and edit as needed. Then run the following command:
+3. Train a completely customized model. 
+   
+   This is a bit tricky as there are a number of parameters defining the architecture and training recipe. One way is to start from the models/bprna.TR0VL0.960K/args.json file and edit as needed. Then run the following command:
 
    `python3 src/fly_paddle.py train -config args.json -save_dir ./ -data_dir ./ -data_name train_data_file`
 
-One major barrier is that most parameters in args.json are unused/obsolete. You should only need to edit the set of parameters underneath "------- lstm tower/module args" and "------- conv2d tower/module args" as annotated below:
+One major inconvenience is that most parameters in args.json are unused/obsolete. You should only need to edit the set of parameters underneath "------- lstm tower/module args" and "------- conv2d tower/module args" as annotated below:
 
 ```
     "conv2d_norm_in": false,        # whether to normalize the input to the Conv2D module
