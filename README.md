@@ -101,14 +101,14 @@ Three files will be saved:
 - folder-name.json for some statistics of the dataset
 
 ### Train
-There are three main ways. 
+You can test whether training can proceed with the provided Stralign NR80 dataset before trying one of the three ways below.
+
+   `seqfold2d.sh train -model bprna.TR0VL0.960K examples/stralign_nr80.pkl -resume true`
+
 1. Fine-tune or retrain from scratch one of the saved models
 
    `seqfold2d.sh train -model bprna.TR0VL0.960K train_data_file -resume true`
-
-This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 datasets. Remove "-resume true" for training from scratch. You can test whether training can proceed with the provided Stralign NR80 dataset.
-
-   `seqfold2d.sh train -model bprna.TR0VL0.960K examples/stralign_nr80.pkl -resume true`
+This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 datasets. Remove "-resume true" for training from scratch. 
 
 2. Train a new model modified from one of the saved models
 
