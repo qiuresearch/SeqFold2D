@@ -26,18 +26,6 @@ The simplest way is to create a new anaconda environment using the environment_[
 
 This will create conda environment seqfold2d_cpu or seqfold2d_gpu.
 
-#### One by One
-1. python=3.10
-2. PaddlePaddle=2.4.2 (Please follow [the official installation instruction here.](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html))
-3. numpy>=1.21
-4. pandas>=1.41
-5. colorlog>=5.0.1
-6. tqdm>=4.63
-7. matplotlib>=3.5.1
-8. scipy>=1.7.3
-9. scikit-learn>=1.02
-10. optuna>=3.0
-
 #### Conda GPU installation with CUDA 11.6
 - Please refer to [installation guide](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html) for other CUDA versions.
 - If the program complains about libcudnn.so being not found or incompatible, you may need to add [path-to-seqfold2d-env]/lib to LD_LIBRARY_PATH
@@ -56,6 +44,18 @@ conda install numpy pandas tqdm matplotlib scipy scikit-learn -y
 conda install colorlog optuna -c conda-forge -y
 ```
 
+#### One by One
+1. python=3.10
+2. PaddlePaddle=2.4.2 (Please follow [the official installation instruction here.](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html))
+3. numpy>=1.21
+4. pandas>=1.41
+5. colorlog>=5.0.1
+6. tqdm>=4.63
+7. matplotlib>=3.5.1
+8. scipy>=1.7.3
+9. scikit-learn>=1.02
+10. optuna>=3.0
+    
 
 ## Usage
 seqfold2d.sh should be the only script needed to run the code. It can be run without argument to get the following help:
@@ -95,8 +95,6 @@ You only need to pre-process data if you are going to train a SeqFold2D model wi
 
 Replace brew_dbn by brew_ct for ct format and by brew_bpseq for bpseq format. The extension of each data file must be bpseq, ct, or dbn. If otherwise, pass `-ct_suffix <suffix without .>` to seqfold2d.sh (yes, use -ct_suffix even for brew_dbn or brew_bpseq).
 
-
-
 Three files will be saved:
 - folder-name.pkl for training
 - folder-name.csv for inspection of correct parsing
@@ -106,9 +104,11 @@ Three files will be saved:
 There are three main ways. 
 1. Fine-tune or retrain from scratch one of the saved models
 
-   `seqfold2d.sh train -model bprna.TR0VL0.960K train_data_file -resume`
+   `seqfold2d.sh train -model bprna.TR0VL0.960K train_data_file -resume true`
 
-This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 datasets. Remove "-resume" for training from scratch. 
+This will fine-tune the SeqFold2D-960K model trained with the bpRNA TR0 and VL0 datasets. Remove "-resume true" for training from scratch. You can test whether training can proceed with the provided Stralign NR80 dataset.
+
+   `seqfold2d.sh train -model bprna.TR0VL0.960K examples/stralign_nr80.pkl -resume true`
 
 2. Train a new model modified from one of the saved models
 
