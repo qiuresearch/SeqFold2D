@@ -157,3 +157,6 @@ One major inconvenience is that most parameters in args.json are unused/obsolete
 seqfold2d.sh predict examples/stralign_nr80_100Seqs.fasta -model stralign.NR80.1p4M
 ```
 A folder will be created under current directory and a bpseq file and pairing probability matrix will be saved for each sequence.
+
+## License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
