@@ -863,7 +863,7 @@ def load_chop_midat(args=misc.Struct(), **kwargs):
                 df = df[df[colname] <= float(args.data_range[2])]
             logger.info(f'{df.shape[0]} samples left after data_range')
         else:
-            logger.warning(f'dataframe does not have column: {colname}!!!')
+            logger.warning(f'dataframe does not have column: {colname}! (can be safely ignored)')
 
     # apply data_ratio: [colname1, colname2, min, max]
     if args.data_ratio is not None and len(args.data_ratio) > 3:
@@ -875,7 +875,7 @@ def load_chop_midat(args=misc.Struct(), **kwargs):
                 df = df[df[args.data_ratio[0]] <= float(args.data_ratio[3]) * df[args.data_ratio[1]]]
             logger.info(f'{df.shape[0]} samples left after data_ratio')
         else:
-            logger.warning(f'Dataframe does not have all cols: {args.data_ratio[0:2]}!!!')
+            logger.warning(f'Dataframe does not have all cols: {args.data_ratio[0:2]}! (can be safely ignored)')
 
     # apply data_size
     if args.data_size is not None and args.data_size > 0:

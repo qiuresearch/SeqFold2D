@@ -1590,7 +1590,7 @@ def dbn2ct(dbn, check_closure=False):
         return ct
     else:
         logger.warning(f'No contact table generated for dbn: {dbn}')
-        return np.empty((0,0), dtype=np.int)
+        return np.empty((0,0), dtype=int)
 
 
 def dbn2upp(dbn):

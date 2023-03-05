@@ -20,8 +20,8 @@ default_model=${saved_models[2]}
 Usage: ${0##*/} action data_files [cmOptions]
 
 Arguments:
-    action          : one of train, evaluate/eval, predict
-    data_files      : one or multiple files of fmt: fasta or csv or pkl
+    action          : one of train, predict, or brew_dbn/brew_ct/brew_bpseq
+    data_files      : pkl file(s) for train, fasta file(s) for predict, folder for brew_dbn/ct/bpseq
     -model       [] : choose a model from the following (default: ${default_model}):
 "
     printf "%47s\n" "${saved_models[@]}"
@@ -84,10 +84,11 @@ done
 # params="${params// /}" ; params="${params//-/}" ; params="${params//_/}"
 
 [[ -z "${model}" ]] && model=${default_model}
+home_dir="$(dirname $0)"
 src_dir="$(dirname $0)/src"
 
 case "${action^^}" in
-    TRAIN|EVALUATE|EVAL|PREDICT)
+    TRAIN|BREW*|PREDICT)
         [[ -z "${data_files}" ]] && {
             echo "ERROR:: data files must be provided!!!"
             exit 1
@@ -100,8 +101,7 @@ case "${action^^}" in
 esac
 
 # action
-load_dir="models/${model}"
-cmdArgs="${cmdArgs} -feats_nn 1 -loss_fn softmax+fscore -net_summary false -verbose 0"
+load_dir="${home_dir}/models/${model}"
 
 # show changed variables
 while read -r var ; do vars_after+=("$var") ; done <<< $(set)
@@ -115,22 +115,26 @@ for ((i = 0; i < ${#vars_after[@]}; i++)) ; do
     echo "$var" >> $BASH_HIST
 done
 
-
 case "${action^^}" in
     TRAIN)
-        python3 ${src_dir}/fly_paddle.py train -load_dir ${load_dir} -resume true -save_dir -data_dir ./ -data_name ${data_files} ${cmdArgs}
+        python3 ${src_dir}/fly_paddle.py train -load_dir ${load_dir} -save_dir ./ -data_dir ./ \
+            -data_name ${data_files} ${cmdArgs}
     ;;
-    EVALUATE|EVAL)
-        python3 ${src_dir}/fly_paddle.py evaluate -load_dir ${load_dir} -save_dir ./ ${data_files} ${cmdArgs}
-    ;;
+    # EVALUATE|EVAL)
+    #     python3 ${src_dir}/fly_paddle.py evaluate -load_dir ${load_dir} -save_dir ./ \
+    #         ${data_files} ${cmdArgs}
+    # ;;
     PREDICT)
-        python3 ${src_dir}/fly_paddle.py predict -load_dir ${load_dir} -save_dir ./ ${data_files} ${cmdArgs} -save_individual -named_after id
+        python3 ${src_dir}/fly_paddle.py predict -load_dir ${load_dir} -save_dir ./ \
+            ${data_files} ${cmdArgs} -save_individual -named_after id -verbose 0
+    ;;
+    BREW_*)
+        python3 ${src_dir}/brew_midat.py gather_ct -ct_fmt ${action#brew_} -save_csv -ct_dir ${data_files} ${cmdArgs}
     ;;
     *)
-        echo "ERROR: unsupported action: ${action}"
+        echo "ERROR: unsupported action: ${action}!"
         exit 1
     ;;
-    
 esac
 
 end_time=`date +%s`

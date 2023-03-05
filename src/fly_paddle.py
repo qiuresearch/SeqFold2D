@@ -29,6 +29,11 @@ import paddle.nn as nn
 from paddle.io import Dataset
 import paddle.nn.functional as F
 
+import signal
+
+mi.disable_signal_handler()
+# os.kill(os.getpid(), signal.SIGSEGV)
+
 # homebrew
 import misc
 import gwio

@@ -302,26 +302,10 @@
             "num_epochs": 110,
             "optim_step_stride": 8
         }, {
-            "loss_fn": ["softmax+bce"],
-            "learning_rate": 0.0007,
-            "num_epochs": 70,
-            "optim_step_stride": 16
-        }, {
             "loss_fn": ["softmax+fscore"],
             "learning_rate": 0.0001,
-            "num_epochs": 50,
+            "num_epochs": 100,
             "optim_step_stride": 16
-        }, {
-            "loss_fn": ["softmax+fscore+bpp"],
-            "learning_rate": 0.0001,
-            "num_epochs": 50,
-            "optim_step_stride": 32
-        }, {
-            "loss_fn": ["softmax+fscore+bpp"],
-            "learning_rate": 0.0001,
-            "num_epochs": 50,
-            "optim_step_stride": 64,
-            "lr_cooldn_steps": 7
         }],
     "num_samples": 12114,
     "max_len": 498,

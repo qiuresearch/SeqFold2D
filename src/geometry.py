@@ -1278,4 +1278,4 @@ if __name__ == 'TO BE IMPLEMENTED' : # '__main__':
     # print 'should parrallel'
     # print '|v|:', vector/np.sqrt(np.dot(vector,vector))
 
-    print('\m/ >.< \m/')
+    # print('\m/ >.< \m/')

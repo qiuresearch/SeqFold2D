@@ -1943,7 +1943,7 @@ def gather_ct(
     if len(ct_suffix) and not ct_suffix.startswith('.'):
         ct_suffix = '.' + ct_suffix
 
-    auto_save_prefix = Path(ct_dir).resolve().parent.stem
+    auto_save_prefix = Path(ct_dir).resolve().stem
 
     # get ct_files
     if ct_files is not None and len(ct_files):
