@@ -44,7 +44,7 @@ conda install numpy pandas tqdm matplotlib scipy scikit-learn -y
 conda install colorlog optuna -c conda-forge -y
 ```
 
-#### One by One
+#### One by One by Hand
 1. python=3.10
 2. PaddlePaddle=2.4.2 (Please follow [the official installation instruction here.](https://www.paddlepaddle.org.cn/documentation/docs/en/install/index_en.html))
 3. numpy>=1.21
@@ -89,11 +89,13 @@ Multiprocess PaddlePaddle appears to throw many error messages during the run, w
 ## Examples
 
 ### Brew data for training
-You only need to pre-process data if you are going to train a SeqFold2D model with your own data. The best starting place is a folder of bpseq, ct, or dbn files. Run the following command to generate a pkl file (saved from a pd.DataFrame) for training.
+You only need to pre-process data if you are going to train a SeqFold2D model with your own data. The best starting place is a folder of bpseq, ct, or dbn files. Run the following command to generate a pkl file (saved from a pd.DataFrame) from a folder of dbn files.
 
 `seqfold2d.sh brew_dbn [folder-name]`
 
-Replace brew_dbn by brew_ct for ct format and by brew_bpseq for bpseq format. The extension of each data file must be bpseq, ct, or dbn. If otherwise, pass `-ct_suffix <suffix without .>` to seqfold2d.sh (yes, use -ct_suffix even for brew_dbn or brew_bpseq).
+- Replace brew_dbn by brew_ct for ct format and by brew_bpseq for bpseq format.
+- The extension of each data file must be bpseq, ct, or dbn. 
+- If with different extensions, pass `-ct_suffix <suffix without .>` to seqfold2d.sh (yes, use -ct_suffix even for brew_dbn or brew_bpseq).
 
 Three files will be saved:
 - folder-name.pkl for training
